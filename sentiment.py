@@ -23,30 +23,27 @@ from transformers import (
     Trainer,
     TrainingArguments,
 )
+from loader import get_clean_hospital_data
 
 
-df = pd.read_csv("data/hospital.csv")
+df = get_clean_hospital_data()
 
-# preprocess
-df.drop(columns=["Unnamed: 3"], errors="ignore")
-df.dropna(subset=["Feedback", "Sentiment Label"])
 
-# print(df.head())
-# print(df.columns)
+def process_baseline():
+    sentiment_pipeline = pipeline("sentiment-analysis")
+    results = sentiment_pipeline(df["Feedback"].tolist())
+    # print(results)
 
-sentiment_pipeline = pipeline("sentiment-analysis")
-results = sentiment_pipeline(df["Feedback"].tolist())
-# print(results)
+    df["predicted_label"] = [1 if r["label"] == "POSITIVE" else 0 for r in results]
+    df["confidence"] = [r["score"] for r in results]
 
-df["predicted_label"] = [1 if r["label"] == "POSITIVE" else 0 for r in results]
-df["confidence"] = [r["score"] for r in results]
+    print("Baseline on pretrained model\n")
+    print("Accuracy: ", accuracy_score(df["Sentiment Label"], df["predicted_label"]))
+    print(
+        "Classification report\n",
+        classification_report(df["Sentiment Label"], df["predicted_label"]),
+    )
 
-# print("Baseline on pretrained model\n")
-# print("Accuracy: ", accuracy_score(df["Sentiment Label"], df["predicted_label"]))
-# print(
-#     "Classification report\n",
-#     classification_report(df["Sentiment Label"], df["predicted_label"]),
-# )
 
 # fine tuning model to dataset
 df = df.rename(columns={"Feedback": "text", "Sentiment Label": "label"})
