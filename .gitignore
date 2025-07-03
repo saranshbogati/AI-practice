@@ -4,3 +4,7 @@ tokenizers/
 *.pt
 *.safetensors
 tokenizer.json
+.env
+*.pyc
+*.DS_Store
+*checkpoint*
