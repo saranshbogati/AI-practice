@@ -126,3 +126,8 @@ Built a Retrieval-Augmented Generation (RAG) pipeline to answer questions ground
 
 ---
 
+## Dataset Links (Kaggle)
+- [Hospital Reviews](https://www.kaggle.com/datasets/junaid6731/hospital-reviews-dataset)
+- [Appointment No show](https://www.kaggle.com/datasets/joniarroba/noshowappointments)
+- [Premier League](https://www.kaggle.com/datasets/aesika/english-premier-league-player-stats-2425)
+
